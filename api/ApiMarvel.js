@@ -7,3 +7,17 @@ export async function getComics(){
     const {results} = await data;
     return results;
 }
+
+export async function getSeries(){
+    const response = await fetch(`http://gateway.marvel.com/v1/public/series?ts=1000&apikey=${apikey}&hash=${hash}`);
+    const {data} = await response.json();
+    const {results} = await data;
+    return results;
+}
+
+export async function getCharacters(){
+    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?ts=1000&apikey=${apikey}&hash=${hash}`);
+    const {data} = await response.json();
+    const {results} = await data;
+    return results;
+}

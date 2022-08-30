@@ -1,11 +1,37 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { getSeries } from '../api/ApiMarvel';
 
 const SeriesScreen = () => {
+  const [dataSeries, setDataSeries] = useState([]);
+
+  const getSeriesData = async () =>{
+    const data = await getSeries();
+    setDataSeries(data);
+  }
+
+  function itemsSeries({item}){
+
+    const url = item.thumbnail.path+'/portrait_fantastic.'+item.thumbnail.extension;
+
+    return(
+      <View style={{marginBottom: 20, padding: 10}}>
+        <Text>{item.name}: {item.description}</Text>
+        <Image source={{uri: url}}  style={{width: 168, height: 252}}/>
+      </View>
+    )
+  }
+
+  useEffect(() => {
+    getSeriesData();
+  }, [])
+
   return (
-    <View>
-      <Text>SeriesScreen</Text>
-    </View>
+    <FlatList 
+      data={dataSeries}
+      keyExtractor={x => x.id}
+      renderItem={itemsSeries}
+    />
   )
 }
 

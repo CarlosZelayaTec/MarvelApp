@@ -1,27 +1,38 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { getCharacters } from '../api/ApiMarvel'
 
 const HomeScreen = () => {
 
-  // const [data, setData] = useState([]);
+  const [dataCharacters, setDataCharacters] = useState([]);
 
-  // const fetchApi = async () =>{
-  //   // const response = await fetch('http://gateway.marvel.com/v1/public/comics?apikey=a607ad46e955867cb0306b83d30a2634');
-  //   const response = await fetch('http://gateway.marvel.com/v1/public/comics?ts=1000&apikey=a607ad46e955867cb0306b83d30a2634&hash=f60caff63104de71b8edcf38ab49de9e');
-  //   const {data} = await response.json();
-  //   const {results} = await data;
-  //   // console.log(results);
-  //   setData(results);
-  // }
+  const getCharactersData = async () =>{
+    const data = await getCharacters();
+    setDataCharacters(data);
+  }
 
-  // useEffect(() => {
-  //   fetchApi();
-  // }, [])
+  function itemsCharacters({item}){
+
+    const url = item.thumbnail.path+'/portrait_fantastic.'+item.thumbnail.extension;
+
+    return(
+      <View style={{marginBottom: 20, padding: 10}}>
+        <Text>{item.name}: {item.description}</Text>
+        <Image source={{uri: url}}  style={{width: 168, height: 252}}/>
+      </View>
+    )
+  }
+
+  useEffect(() => {
+    getCharactersData();
+  }, [])
 
   return (
-    <View>
-      <Text>HomeScreen</Text>
-    </View>
+    <FlatList 
+      data={dataCharacters}
+      keyExtractor={x => x.id}
+      renderItem={itemsCharacters}
+    />
   )
 }
 
