@@ -16,7 +16,7 @@ const SeriesScreen = () => {
 
     return(
       <View style={{marginBottom: 20, padding: 10}}>
-        <Text>{item.name}: {item.description}</Text>
+        <Text>{item.name ?? "No hay informacion"}: {item.description ?? "No hay información"}</Text>
         <Image source={{uri: url}}  style={{width: 168, height: 252}}/>
       </View>
     )
